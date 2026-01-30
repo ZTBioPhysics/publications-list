@@ -144,7 +144,47 @@ git push
 - **GitHub Repo:** https://github.com/ZTBioPhysics/publications-list
 - **Publications URL:** https://ztbiophysics.github.io/publications-list/
 - **Press Page URL:** https://ztbiophysics.github.io/publications-list/press.html
+- **3D Structures URL:** https://ztbiophysics.github.io/publications-list/structures.html
 - **Local Path:** `/Users/ztbm97/Library/CloudStorage/OneDrive-UniversityofMissouri/Berndsen_Lab/Code/GitHub/publications-list/`
+
+---
+
+## 3D Structure Viewer Page
+
+### How It Works
+1. **JavaScript fetches** your PDB structures from RCSB PDB using `audit_author.name = "Berndsen, Z.T."`
+2. Structures are **auto-categorized** based on keywords in titles:
+   - HIV/SIV Envelope Glycoproteins
+   - Lipoproteins
+   - Bacterial Proteins
+3. **PDBe Mol* viewer** displays structures with full interactivity
+4. Associated **EMDB maps** are loaded automatically when available
+
+### Files
+- `structures.html` - The complete viewer page (self-contained)
+
+### Auto-Updates
+New PDB structures are automatically detected when:
+- You deposit a new structure to PDB
+- The structure is released and indexed
+- A visitor loads the page (fetches fresh from PDB API)
+
+No manual updates needed - new structures appear automatically!
+
+### Embed Code
+```html
+<iframe src="https://ztbiophysics.github.io/publications-list/structures.html" width="100%" height="700" style="border:none;"></iframe>
+```
+
+### Customization
+To add new categories, edit the `categories` object in `structures.html`:
+```javascript
+const categories = {
+  'HIV/SIV Envelope Glycoproteins': ['HIV', 'SIV', 'Envelope', 'SOSIP', 'ApexGT'],
+  'Lipoproteins': ['ApoB', 'LDL', 'Lipoprotein', 'Low-Density'],
+  'Bacterial Proteins': ['Escherichia', 'E. coli', 'EtpA', 'adhesin', 'Bacterial']
+};
+```
 
 ---
 
