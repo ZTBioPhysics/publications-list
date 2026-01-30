@@ -1,0 +1,67 @@
+{
+  "last_updated": "2026-01-30",
+  "articles": [
+    {
+      "title": "A protein at the heart of heart disease",
+      "source": "Mizzou News",
+      "date": "2025-01-15",
+      "url": "https://showme.missouri.edu/2025/a-protein-at-the-heart-of-heart-disease/",
+      "image": "https://showme.missouri.edu/wp-content/uploads/2025/01/020425_ZachKeith_SI.png",
+      "description": "Mizzou researchers discover the structure of a protein that could lead to more targeted heart disease treatments"
+    },
+    {
+      "title": "The molecular structure of LDL has finally been elucidated",
+      "source": "Nature Reviews Cardiology",
+      "date": "2025-01-20",
+      "url": "https://www.nature.com/articles/s41569-025-01128-z",
+      "image": "https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41569-025-01128-z/MediaObjects/41569_2025_1128_Fig1_HTML.png?as=webp",
+      "description": "Two Nature studies reveal apolipoprotein B100 structure using AI-assisted cryo-electron microscopy"
+    },
+    {
+      "title": "The structure of 'bad cholesterol' comes into focus",
+      "source": "Nature News & Views",
+      "date": "2025-01-15",
+      "url": "https://www.nature.com/articles/d41586-024-04210-7",
+      "image": "https://media.nature.com/lw767/magazine-assets/d41586-024-04210-7/d41586-024-04210-7_50429558.png?as=webp",
+      "description": "High-resolution structures of low-density lipoprotein reveal new insights"
+    },
+    {
+      "title": "Cholesterol-wrapping lipoprotein gets a closer look",
+      "source": "Chemical & Engineering News",
+      "date": "2024-12-27",
+      "url": "https://cen.acs.org/analytical-chemistry/structural-biology/Cholesterol-wrapping-lipoprotein-closer-look/102/web/2024/12",
+      "image": "https://s7d1.scene7.com/is/image/CENODS/20241227lnp1-lipoprotein-2?%24responsive%24=&wid=666&fit=constrain&qlt=90%2C0&resMode=sharp2&fmt=webp",
+      "description": "Structures of ApoB100 show LDL receptor contact points"
+    },
+    {
+      "title": "Apolipoprotein B-100 and LDL Receptor",
+      "source": "RCSB Protein Data Bank",
+      "date": "2025-01-01",
+      "url": "https://pdb101.rcsb.org/motm/304",
+      "image": "https://cdn.rcsb.org/pdb101/motm/304/9BDTdimer_1000px.png",
+      "description": "Molecule of the Month: Insights into how LDL is removed from the bloodstream"
+    },
+    {
+      "title": "Revealing a key protein behind heart disease",
+      "source": "Google DeepMind",
+      "date": "2025-01-15",
+      "url": "https://deepmind.google/blog/revealing-a-key-protein-behind-heart-disease/",
+      "image": "https://lh3.googleusercontent.com/EQ3fU3ufBGJ3-WTKi5BRxnz3MEG3yKVYrzddN-uk5ZBeOscsXRa0tl3SKZXwUHopwOm7D1wYac4M7x-jWsifzBjw1FIOAVd2WLIKzaUKlfVm_aSC4Q=w2880-h1620-n-nu-rw-lo",
+      "description": "How cryo-EM and AlphaFold revealed the structure of apolipoprotein B100"
+    }
+  ],
+  "videos": [
+    {
+      "title": "Fighting LDL: The Structure of Bad Cholesterol",
+      "source": "Facebook",
+      "facebook_url": "https://www.facebook.com/watch/?v=1128374538697455",
+      "description": "Mizzou press release video on our LDL structure research"
+    },
+    {
+      "title": "Scripps Research Journeys: Tackling HIV",
+      "source": "YouTube",
+      "youtube_id": "X6wGtowNRtU",
+      "description": "Research documentary featuring our HIV structural biology work"
+    }
+  ]
+}
