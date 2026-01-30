@@ -278,9 +278,11 @@
               </div>`;
             } else if (video.facebook_url) {
               const encodedUrl = encodeURIComponent(video.facebook_url);
-              embedHtml = `<div class="video-embed">
-                <iframe src="https://www.facebook.com/plugins/video.php?href=${encodedUrl}&show_text=false"
-                        style="border:none;overflow:hidden"
+              embedHtml = `<div style="width:100%;max-width:600px;">
+                <iframe src="https://www.facebook.com/plugins/video.php?href=${encodedUrl}&show_text=false&width=600&height=338"
+                        width="600"
+                        height="338"
+                        style="border:none;overflow:hidden;max-width:100%;"
                         scrolling="no"
                         frameborder="0"
                         allowfullscreen="true"
