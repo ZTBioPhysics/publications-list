@@ -4,13 +4,35 @@ Fetch publications from Google Scholar and save to JSON.
 Only fetches full details for new publications to avoid rate limiting.
 """
 
-from scholarly import scholarly
+from scholarly import scholarly, ProxyGenerator
 import json
 import os
+import time
 from datetime import datetime, timezone
 
 SCHOLAR_ID = "u9i3_ywAAAAJ"
 OUTPUT_FILE = "publications.json"
+
+def setup_proxy():
+    """Set up proxy rotation to avoid Google Scholar blocking."""
+    print("Setting up proxy rotation...")
+    pg = ProxyGenerator()
+
+    # Try ScraperAPI first if available (more reliable)
+    scraper_api_key = os.environ.get('SCRAPER_API_KEY')
+    if scraper_api_key:
+        print("Using ScraperAPI proxy")
+        pg.ScraperAPI(scraper_api_key)
+    else:
+        # Fall back to free proxies
+        print("Using free proxy rotation")
+        success = pg.FreeProxies()
+        if not success:
+            print("Warning: Could not set up free proxies, proceeding without")
+            return False
+
+    scholarly.use_proxy(pg)
+    return True
 
 def load_existing_publications():
     """Load existing publications from JSON file if it exists."""
@@ -56,6 +78,10 @@ def fetch_publications():
             print(f"  [fetching] {title[:60]}...")
             new_count += 1
 
+            # Add delay between requests to avoid rate limiting
+            if new_count > 1:
+                time.sleep(2)
+
             try:
                 # Fill in full publication details (includes authors)
                 full_pub = scholarly.fill(pub)
@@ -99,6 +125,9 @@ def fetch_publications():
     return publications
 
 def main():
+    # Set up proxy to avoid Google Scholar blocking
+    setup_proxy()
+
     publications = fetch_publications()
 
     # Create output data with metadata

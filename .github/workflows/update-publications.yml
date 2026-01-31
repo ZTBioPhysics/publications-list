@@ -29,6 +29,7 @@ jobs:
 
       - name: Fetch publications
         run: python fetch_pubs.py
+        timeout-minutes: 10
 
       - name: Commit and push if changed
         run: |
