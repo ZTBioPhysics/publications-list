@@ -14,25 +14,69 @@ SCHOLAR_ID = "u9i3_ywAAAAJ"
 OUTPUT_FILE = "publications.json"
 
 def setup_proxy():
-    """Set up proxy rotation to avoid Google Scholar blocking."""
+    """Set up proxy rotation to avoid Google Scholar blocking.
+
+    Returns True if proxy was set up successfully, False otherwise.
+    Failures are non-fatal - the script will continue without proxy.
+    """
     print("Setting up proxy rotation...")
-    pg = ProxyGenerator()
 
-    # Try ScraperAPI first if available (more reliable)
-    scraper_api_key = os.environ.get('SCRAPER_API_KEY')
-    if scraper_api_key:
-        print("Using ScraperAPI proxy")
-        pg.ScraperAPI(scraper_api_key)
-    else:
-        # Fall back to free proxies
-        print("Using free proxy rotation")
-        success = pg.FreeProxies()
-        if not success:
-            print("Warning: Could not set up free proxies, proceeding without")
-            return False
+    try:
+        pg = ProxyGenerator()
 
-    scholarly.use_proxy(pg)
-    return True
+        # Try ScraperAPI first if available (more reliable)
+        scraper_api_key = os.environ.get('SCRAPER_API_KEY')
+        if scraper_api_key:
+            print("Using ScraperAPI proxy")
+            pg.ScraperAPI(scraper_api_key)
+        else:
+            # Fall back to free proxies
+            print("Using free proxy rotation")
+            success = pg.FreeProxies()
+            if not success:
+                print("Warning: Could not set up free proxies, proceeding without")
+                return False
+
+        scholarly.use_proxy(pg)
+        print("Proxy setup successful")
+        return True
+
+    except Exception as e:
+        print(f"Warning: Proxy setup failed ({type(e).__name__}: {e})")
+        print("Proceeding without proxy - may be rate limited by Google Scholar")
+        return False
+
+def fetch_with_retry(func, *args, max_retries=3, base_delay=5, **kwargs):
+    """Execute a function with exponential backoff retry logic.
+
+    Args:
+        func: Function to call
+        *args: Positional arguments for func
+        max_retries: Maximum number of retry attempts
+        base_delay: Base delay in seconds (doubles each retry)
+        **kwargs: Keyword arguments for func
+
+    Returns:
+        Result of func(*args, **kwargs)
+
+    Raises:
+        Last exception if all retries fail
+    """
+    last_exception = None
+    for attempt in range(max_retries):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            last_exception = e
+            if attempt < max_retries - 1:
+                delay = base_delay * (2 ** attempt)
+                print(f"  Attempt {attempt + 1} failed: {e}")
+                print(f"  Retrying in {delay} seconds...")
+                time.sleep(delay)
+            else:
+                print(f"  All {max_retries} attempts failed")
+    raise last_exception
+
 
 def load_existing_publications():
     """Load existing publications from JSON file if it exists."""
@@ -55,11 +99,13 @@ def fetch_publications():
     existing_pubs = load_existing_publications()
     print(f"Found {len(existing_pubs)} existing publications in cache")
 
-    # Get author by ID
-    author = scholarly.search_author_id(SCHOLAR_ID)
+    # Get author by ID with retry logic
+    print("Fetching author profile...")
+    author = fetch_with_retry(scholarly.search_author_id, SCHOLAR_ID)
 
-    # Fill in publication list (basic info only)
-    author = scholarly.fill(author, sections=['publications'])
+    # Fill in publication list (basic info only) with retry logic
+    print("Fetching publication list...")
+    author = fetch_with_retry(scholarly.fill, author, sections=['publications'])
 
     publications = []
     new_count = 0
@@ -125,10 +171,24 @@ def fetch_publications():
     return publications
 
 def main():
-    # Set up proxy to avoid Google Scholar blocking
-    setup_proxy()
+    """Main entry point. Returns 0 on success, 1 on failure."""
+    # Set up proxy to avoid Google Scholar blocking (non-fatal if it fails)
+    proxy_ok = setup_proxy()
+    if not proxy_ok:
+        print("Continuing without proxy...\n")
 
-    publications = fetch_publications()
+    try:
+        publications = fetch_publications()
+    except Exception as e:
+        print(f"\nError fetching publications: {type(e).__name__}: {e}")
+
+        # If we have cached data, exit gracefully
+        if os.path.exists(OUTPUT_FILE):
+            print(f"Keeping existing {OUTPUT_FILE} (fetch failed but cached data exists)")
+            return 0
+        else:
+            print("No cached data available - cannot recover")
+            return 1
 
     # Create output data with metadata
     output = {
@@ -144,6 +204,8 @@ def main():
 
     print(f"\nSuccessfully saved {len(publications)} publications to {OUTPUT_FILE}")
     print(f"Last updated: {output['last_updated']}")
+    return 0
 
 if __name__ == '__main__':
-    main()
+    import sys
+    sys.exit(main())
