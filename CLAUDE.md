@@ -66,20 +66,19 @@ python fetch_pubs.py
 ```
 
 ## Current Status
-Project is stable. Pending commit with httpx fix for GitHub Actions.
+**Uncommitted changes:** Workflow fix for git push authentication.
 
-**Uncommitted changes:**
-- `requirements.txt` - Added `httpx<0.28.0` pin (fixes scholarly compatibility)
-- `fetch_pubs.py` - Improved error handling, retry logic, graceful degradation
+Last commit: `7a5b2b9` - Fixed httpx compatibility for GitHub Actions
 
 ## Known Issues
 - `scholarly` library is unmaintained; httpx must stay pinned to <0.28.0
 - Free proxies are unreliable; consider ScraperAPI if blocking becomes frequent
 
 ## Pending/Future Work
-- Commit and push the httpx fix
-- Trigger GitHub Action manually to verify
-- Update Google Sites iframe embed codes to new URL:
+- **Commit and push workflow fix** - `.github/workflows/update-publications.yml` modified
+- **Verify GitHub Action** - Manually trigger after push to confirm authentication fix works
+- **If workflow still fails** - Check Settings → Actions → General → "Workflow permissions" (needs "Read and write")
+- **Update Google Sites** - Change iframe src URLs to new repo name:
   - `https://ztbiophysics.github.io/Berndsen-Lab-Website/index.html`
   - `https://ztbiophysics.github.io/Berndsen-Lab-Website/press.html`
   - `https://ztbiophysics.github.io/Berndsen-Lab-Website/structures.html`
