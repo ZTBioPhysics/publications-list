@@ -32,6 +32,8 @@ jobs:
       - name: Fetch publications
         run: python fetch_pubs.py
         timeout-minutes: 10
+        env:
+          SCRAPER_API_KEY: ${{ secrets.SCRAPER_API_KEY }}
 
       - name: Commit and push if changed
         run: |

@@ -116,9 +116,15 @@ def fetch_publications():
 
         # Check if we already have full details for this publication
         if title in existing_pubs and existing_pubs[title].get('authors'):
-            # Use cached data
-            print(f"  [cached] {title[:60]}...")
-            publications.append(existing_pubs[title])
+            # Use cached data but update citation count from fresh Scholar data
+            cached = existing_pubs[title].copy()
+            fresh_citations = pub.get('num_citations', 0)
+            if fresh_citations != cached.get('citations', 0):
+                print(f"  [cached, citations {cached.get('citations', 0)} → {fresh_citations}] {title[:60]}...")
+            else:
+                print(f"  [cached] {title[:60]}...")
+            cached['citations'] = fresh_citations
+            publications.append(cached)
         else:
             # New publication - fetch full details
             print(f"  [fetching] {title[:60]}...")
