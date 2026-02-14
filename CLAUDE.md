@@ -26,8 +26,9 @@ This is the **Berndsen Lab publication and media management system** for the Uni
 
 ### 4. Publication Fetcher (`fetch_pubs.py`)
 - Python script scraping Google Scholar via `scholarly` library
-- Smart caching: only fetches new publications
-- Proxy rotation via ScraperAPI or free proxies
+- Smart caching: only fetches full details for new publications
+- Citation counts refreshed on every run from basic Scholar data (no extra API calls)
+- Proxy rotation via ScraperAPI (preferred) or free proxies (fallback)
 
 ## Technology Stack
 - **Frontend**: HTML5, CSS3, Vanilla JavaScript
@@ -56,8 +57,8 @@ This is the **Berndsen Lab publication and media management system** for the Uni
 - Responsive design optimized for iframe embedding
 
 ## Configuration
-- `SCRAPER_API_KEY` env var (optional): For proxy rotation
-- Without it, falls back to free proxies
+- `SCRAPER_API_KEY` env var (recommended): Set as GitHub Actions repository secret for reliable ScraperAPI proxy access
+- Without it, falls back to free proxies (unreliable)
 
 ## Running Locally
 ```bash
@@ -66,16 +67,21 @@ python fetch_pubs.py
 ```
 
 ## Current Status
-**Project is stable and fully operational.** GitHub Actions workflow runs daily at 2 AM UTC.
+**Project is stable and fully operational.** GitHub Actions workflow runs daily at 2 AM UTC using ScraperAPI for reliable Google Scholar access. Citation counts are refreshed on every run.
 
-Last commit: `d9c5e7c` - Fix GitHub Actions push authentication
+Last updated: 2026-02-14
 
 ## Known Issues
 - `scholarly` library is unmaintained; httpx must stay pinned to <0.28.0
-- Free proxies are unreliable; consider ScraperAPI if blocking becomes frequent
+- ScraperAPI free tier has 5,000 requests/month limit (more than sufficient for daily runs)
 
-## Pending/Future Work
-- **Update Google Sites** (if not done) - Change iframe src URLs to new repo name:
-  - `https://ztbiophysics.github.io/Berndsen-Lab-Website/index.html`
-  - `https://ztbiophysics.github.io/Berndsen-Lab-Website/press.html`
-  - `https://ztbiophysics.github.io/Berndsen-Lab-Website/structures.html`
+## Conda Environment
+- Name: `berndsen-lab-website`
+- Python: 3.11
+
+## Future Ideas
+- Team/People page (photo grid with Scholar/ORCID links)
+- Research Projects page (visual cards per research area)
+- Software & Tools page (lab computational tools/pipelines)
+- Photo gallery (lab photos, cryo-EM micrographs, conference presentations)
+- Lab News/Blog (papers, grants, student achievements)
